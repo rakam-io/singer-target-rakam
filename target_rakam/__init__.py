@@ -473,6 +473,25 @@ def main_impl():
     LOGGER.info("Exiting normally")
 
 
+def send_usage_stats():
+    try:
+        version = pkg_resources.get_distribution('target-rakam').version
+        conn = http.client.HTTPSConnection('collector.stitchdata.com', timeout=10)
+        conn.connect()
+        params = {
+            'e': 'se',
+            'aid': 'singer',
+            'se_ca': 'target-rakam',
+            'se_ac': 'open',
+            'se_la': version,
+        }
+        conn.request('GET', '/i?' + urllib.parse.urlencode(params))
+        conn.getresponse()
+        conn.close()
+    except:
+        LOGGER.debug('Collection request failed')
+
+
 def main():
     """Main entry point"""
     try:
