@@ -13,6 +13,7 @@ import json
 import os
 import re
 import sys
+import threading
 import time
 import urllib
 
@@ -463,7 +464,12 @@ def main_impl():
 
         handlers.append(RakamHandler(write_key, api_url + DEFAULT_RAKAM_PATH, args.max_batch_bytes))
 
-    # queue = Queue(args.max_batch_records)
+        if not config.get('disable_collection', False):
+            LOGGER.info('Sending version information to stitchdata.com. ' +
+                        'To disable sending anonymous usage data, set ' +
+                        'the config parameter "disable_collection" to true')
+            threading.Thread(target=send_usage_stats).start()
+
     reader = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
     TargetRakam(handlers,
                 sys.stdout,
