@@ -1,6 +1,6 @@
 # target-rakam
 
-Reads [Singer](https://singer.io) formatted data from stdin and persists it to the Rakam API.
+Reads [Singer](https://singer.io) formatted data from stdin and persists it to the [Rakam API](https://github.com/rakam-io/rakam).
 
 ## Install
 
